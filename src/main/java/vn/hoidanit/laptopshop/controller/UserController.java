@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
+
     // DI : dependency Injection
     private UserService userService;
 
@@ -20,7 +21,7 @@ public class UserController {
 
     @RequestMapping("/")
     public String getHomePage() {
-        return "eric.html";
+        return "hello";
     }
 }
 
