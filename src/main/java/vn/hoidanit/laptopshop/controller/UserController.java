@@ -28,6 +28,15 @@ public class UserController {
         model.addAttribute("hoiDanIt", "from controller with model");
         return "hello";
     }
+
+    @RequestMapping("/admin/user")
+    public String getCreateUserAdmin(Model model) {
+        String test = this.userService.handleHello();
+        model.addAttribute("eric", test);
+        model.addAttribute("hoiDanIt", "from controller with model");
+        return "/admin/user/create";
+    }
+
 }
 
 // @RestController
