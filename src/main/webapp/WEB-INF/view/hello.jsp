@@ -22,7 +22,7 @@
         </head>
 
         <body>
-            hello from jsp
+            hello from hello.jsp
             <h1>
                 <!-- in du lieu tu controller den view  -->
                 ${eric}
@@ -30,6 +30,13 @@
             <h2>
                 ${hoiDanIt}
             </h2>
+            <!-- test sử dụng dữ liệu được submit lên từ form -->
+             <h3> Email : ${newUser.email}</h3>
+             <h3> password : ${newUser.password}</h3>
+             <h3> fullName : ${newUser.fullName}</h3>
+             <h3> Address : ${newUser.address}</h3>
+             <h3> Phone : ${newUser.phone}</h3>
+
             <!-- test xem đã ăn bootstrap chưa  -->
             <button class="btn btn-success">Submit</button>
         </body>
