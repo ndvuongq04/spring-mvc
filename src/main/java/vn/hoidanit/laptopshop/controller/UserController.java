@@ -7,13 +7,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import vn.hoidanit.laptopshop.domain.User;
+import vn.hoidanit.laptopshop.repository.UserRepository;
 import vn.hoidanit.laptopshop.service.UserService;
 
 @Controller
 public class UserController {
 
     // DI : dependency Injection
-    private UserService userService;
+    // final : giúp biến userService đảm bảo tính bất biến , biến này chỉ được gán
+    // giá trị 1 lần trong hàm tạo
+    private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -41,7 +44,8 @@ public class UserController {
          * User vào model của springMVC có tên là newUser
          * cho phép ta sử dụng nó ở trong view với tên newUser
          */
-        System.out.println("run here" + hoidanit);
+        System.out.println("run here " + hoidanit);
+        this.userService.handleSaveUser(hoidanit);
         return "hello";
     }
 

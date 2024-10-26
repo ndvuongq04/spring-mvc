@@ -1,15 +1,19 @@
 package vn.hoidanit.laptopshop.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+// cho spring biet se tao 1 table trong database , co ten nhu class 
 @Entity
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id // cho biet day se la ID
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // cho spring biet tu dong danh ID
     private long id;
+    // not null trong mysql
+    @Column(nullable = false)
     private String email;
     private String password;
     private String fullName;
