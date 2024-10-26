@@ -1,5 +1,7 @@
 package vn.hoidanit.laptopshop.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,6 +29,9 @@ public class UserController {
         String test = this.userService.handleHello();
         model.addAttribute("eric", test);
         model.addAttribute("hoiDanIt", "from controller with model");
+        // lấy ra tất cả user trong database
+        List<User> temp = this.userService.getAllUsers() ;
+        System.out.println( temp);
         return "hello";
     }
 
@@ -44,8 +49,9 @@ public class UserController {
          * User vào model của springMVC có tên là newUser
          * cho phép ta sử dụng nó ở trong view với tên newUser
          */
-        System.out.println("run here " + hoidanit);
-        this.userService.handleSaveUser(hoidanit);
+        // System.out.println("run here " + hoidanit);
+        User temp = this.userService.handleSaveUser(hoidanit);
+        System.out.println(temp) ;
         return "hello";
     }
 
