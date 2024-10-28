@@ -37,33 +37,25 @@
                             <table class="table table-bordered table-hover">
                                 <thead>
                                   <tr>
-                                    <th class = "col-1">ID</th>
-                                    <th class = "col-">Email</th>
-                                    <th class = "col-4">Full Name</th>
-                                    <th >Action</th>
+                                    <th>ID</th>
+                                    <th>Email</th>
+                                    <th>Full Name</th>
+                                    <th>Action</th>
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>
-                                      <button type="button" class="btn btn-success">View</button>
-                                      <button type="button" class="btn btn-warning">Update</button>
-                                      <button type="button" class="btn btn-danger">Delete</button></td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>
-                                      <button type="button" class="btn btn-success">View</button>
-                                      <button type="button" class="btn btn-warning">Update</button>
-                                      <button type="button" class="btn btn-danger">Delete</button>
-                                    </td>
-                                  </tr>
-                                  
+                                  <c:forEach var="user" items="${users1}">
+                                    <tr>
+                                      <th>${user.id}</th>
+                                      <td>${user.email}</td>
+                                      <td>${user.fullName}</td>
+                                      <td>
+                                        <a href = "/admin/user/${user.id}" class="btn btn-success">View</a>
+                                        <button type="button" class="btn btn-warning">Update</button>
+                                        <button type="button" class="btn btn-danger">Delete</button>
+                                      </td>
+                                    </tr>
+                                  </c:forEach>
                                 </tbody>
                               </table>
                         </div>
