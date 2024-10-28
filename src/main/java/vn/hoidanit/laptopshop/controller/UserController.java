@@ -35,14 +35,23 @@ public class UserController {
         return "hello";
     }
 
-    @RequestMapping("/admin/user") // mac dinh laf method = get
+    // URL -> trang tạo mới 1 user
+    @RequestMapping("/admin/user/create") // mac dinh laf method = get
     public String getUserPage(Model model) {
         System.out.println("run not here");
         model.addAttribute("newUser", new User());
         return "/admin/user/create";
     }
 
-    @RequestMapping(value = "/admin/user/create1", method = RequestMethod.POST)
+    // URL -> show table user
+    @RequestMapping("/admin/user") // mac dinh laf method = get
+    public String getTableUserPage(Model model) {
+        System.out.println("run here getTableUserPage ");
+        // model.addAttribute("newUser", new User());
+        return "/admin/user/table-user";
+    }
+
+    @RequestMapping(value = "/admin/user/create", method = RequestMethod.POST)
     public String createUserPage(Model model, @ModelAttribute("newUser") User hoidanit) {
         /*
          * @ModelAttribute("newUser") User hoidanit : tạo 1 đối tượng hoidanit có kiểu

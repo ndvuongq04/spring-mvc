@@ -8,7 +8,7 @@
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Document</title>
+                <title>create user</title>
                 <!-- Latest compiled and minified CSS -->
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
                 rel="stylesheet">
@@ -28,7 +28,7 @@
                     <form:form
                         style = "width : 400px"
                         method="post"
-                        action="/admin/user/create1"
+                        action="/admin/user/create"
                         modelAttribute="newUser"
                     >
                     <!-- form:<...> : bao voi java rang hay quan sat du lieu cua thang nay
