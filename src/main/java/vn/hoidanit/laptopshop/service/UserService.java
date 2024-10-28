@@ -35,4 +35,9 @@ public class UserService {
     public List<User> getAllUsers() {
         return this.userRepository.findAll() ;
     }
+
+    // lấy ra thông tin chi tiết của người dùng
+    public User getUserById(long id){
+        return this.userRepository.findOneById(id) ;
+    }
 }

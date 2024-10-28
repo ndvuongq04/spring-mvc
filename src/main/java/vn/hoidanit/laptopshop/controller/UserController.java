@@ -61,8 +61,9 @@ public class UserController {
      * @PathVariable long id -> mục đích là để cho URL động , thay đổi theo id của user
      *
     */
-       model.addAttribute("id", id) ;
-       System.out.println(">>>Check id = " + id );
+        User user = this.userService.getUserById(id) ;
+       model.addAttribute("user", user) ;
+       System.out.println(">>>Check user = " + user );
        return "/admin/user/show";
     }
 
