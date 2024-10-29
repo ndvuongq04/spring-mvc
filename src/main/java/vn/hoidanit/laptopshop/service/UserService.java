@@ -40,4 +40,5 @@ public class UserService {
     public User getUserById(long id){
         return this.userRepository.findOneById(id) ;
     }
+
 }

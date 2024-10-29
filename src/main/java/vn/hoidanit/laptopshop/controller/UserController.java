@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -31,42 +32,16 @@ public class UserController {
         model.addAttribute("hoiDanIt", "from controller with model");
         // lấy ra tất cả user trong database
         List<User> temp = this.userService.getAllUsers() ;
-        System.out.println( temp);
         return "hello";
     }
 
     // URL -> trang tạo mới 1 user
     @RequestMapping("/admin/user/create") // mac dinh laf method = get
     public String getUserPage(Model model) {
-        System.out.println("run not here");
         model.addAttribute("newUser", new User());
         return "/admin/user/create";
     }
-
-    // URL -> show table user
-    @RequestMapping("/admin/user")
-    public String getTableUserPage(Model model) {
-        System.out.println("run here getTableUserPage ");
-        List<User> users = this.userService.getAllUsers() ;
-        // Lưu data và spring rồi chuyển đến view
-        model.addAttribute("users1", users) ;
-        return "/admin/user/table-user";
-    }
-
-    // URL -> view user
-    @RequestMapping("/admin/user/{id}")
-    public String getUserDetailPage(Model model , @PathVariable long id) {
-    /*
-     * Lấy tham số động
-     * @PathVariable long id -> mục đích là để cho URL động , thay đổi theo id của user
-     *
-    */
-        User user = this.userService.getUserById(id) ;
-       model.addAttribute("user", user) ;
-       System.out.println(">>>Check user = " + user );
-       return "/admin/user/show";
-    }
-
+    // URL nhận data của form creat
     @RequestMapping(value = "/admin/user/create", method = RequestMethod.POST)
     public String createUserPage(Model model, @ModelAttribute("newUser") User hoidanit) {
         /*
@@ -86,5 +61,55 @@ public class UserController {
         */
         return "redirect:/admin/user";
     }
+
+    // URL -> show table user
+    @RequestMapping("/admin/user")
+    public String getTableUserPage(Model model) {
+        List<User> users = this.userService.getAllUsers() ;
+        // Lưu data và spring rồi chuyển đến view
+        model.addAttribute("users1", users) ;
+        return "/admin/user/table-user";
+    }
+
+    // URL -> view user
+    @RequestMapping("/admin/user/{id}")
+    public String getUserDetailPage(Model model , @PathVariable long id) {
+    /*
+     * Lấy tham số động
+     * @PathVariable long id -> mục đích là để cho URL động , thay đổi theo id của user
+     *
+    */
+        User user = this.userService.getUserById(id) ;
+        model.addAttribute("user", user) ;
+        return "/admin/user/show";
+    }
+
+    // URL -> update user
+    @RequestMapping("/admin/user/update/{id}") // mac dinh laf method = get
+    public String getUpdatePage(Model model ,@PathVariable long id ) {
+        System.out.println("run here getUpdatePage ");
+        User currentUser  = this .userService.getUserById(id) ;
+        model.addAttribute("updateUser", currentUser);
+        
+        return "/admin/user/update";
+    }
+    // URL -> nhận data update user
+    @PostMapping(value = "/admin/user/update")
+    public String updateUserPage(Model model, @ModelAttribute("updateUser") User userFormData) {
+        // userFormData : chỉ có các thông tin : fullName , address ,phone , id , còn lại là null
+        User currentUser  = this .userService.getUserById(userFormData.getId()) ;
+        if(currentUser != null){
+            // set lại các giá trị cần update cho currentUser(!password,!email)
+            currentUser.setFullName(userFormData.getFullName()) ;
+            currentUser.setAddress(userFormData.getAddress()) ;
+            currentUser.setPhone(userFormData.getPhone()) ;
+        }
+        User temp = this.userService.handleSaveUser(currentUser);
+        System.out.println(temp) ;
+        
+        return "redirect:/admin/user";
+    }
+
+    
 
 }
