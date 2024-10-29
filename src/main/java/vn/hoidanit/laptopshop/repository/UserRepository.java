@@ -16,5 +16,5 @@ public interface UserRepository extends JpaRepository<User , Long> {
     List<User> findAll() ; // lấy tất cả user trong database 
     List<User> findAllByEmail(String email) ; // lấy tất cả user trong database có email là ...
     User findOneById(long id) ; // lấy ra detail information user
-    
+    void deleteById(long id) ;
 }
