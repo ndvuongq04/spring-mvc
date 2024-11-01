@@ -1,9 +1,13 @@
 package vn.hoidanit.laptopshop.domain;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,6 +18,12 @@ public class Role {
     private long id;
 
     private String name;
+
+    @OneToMany(mappedBy = "role")
+    // mappedBy = "role" tạo mối quan hệ ngược lại với thuộc tính role trong user , giúp hibernate biết đây là mối quan hệ hai chiều
+    private List<User> users ;
+
+
     // miêu tả
     private String description;
     
