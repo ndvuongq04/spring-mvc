@@ -1,4 +1,4 @@
-package vn.hoidanit.laptopshop.controller;
+package vn.hoidanit.laptopshop.controller.admin;
 
 import java.util.List;
 
@@ -63,7 +63,7 @@ public class UserController {
         List<User> users = this.userService.getAllUsers() ;
         // Lưu data và spring rồi chuyển đến view
         model.addAttribute("users1", users) ;
-        return "/admin/user/table-user";
+        return "/admin/user/show";
     }
 
     // URL -> view user
@@ -76,7 +76,7 @@ public class UserController {
     */
         User user = this.userService.getUserById(id) ;
         model.addAttribute("user", user) ;
-        return "/admin/user/show";
+        return "/admin/user/detail";
     }
 
     // URL -> update user

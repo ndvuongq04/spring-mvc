@@ -1,6 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-    <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
         <!DOCTYPE html>
         <html lang="en">
 
@@ -10,7 +9,7 @@
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
             <meta name="description" content="Hỏi Dân IT - Dự án laptopshop" />
             <meta name="author" content="Hỏi Dân IT" />
-            <title>Delete - Nguyễn Đình Vượng</title>
+            <title>View - Nguyễn Đình Vượng</title>
             <link href="/css/styles.css" rel="stylesheet" />
             <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         </head>
@@ -26,36 +25,35 @@
                             <ol class="breadcrumb mb-4">
                                 <li class="breadcrumb-item active"><a href="/admin" style="text-decoration: none">Dashboard</a></li>
                                 <li class="breadcrumb-item active"><a href="/admin/user" style="text-decoration: none">User</a></li>
-                                <li class="breadcrumb-item active">Delete</li>
+                                <li class="breadcrumb-item active">View</li>
                             </ol>
                             <!-- Nội dung -->
                             <div>
                                 <div class="mt-5">
                                     <div class="row">
                                         <div class="col-12 mx-auto">
-                                            <h2>
-                                                Delete a user id = ${id}
-                                            </h2>
-                                            <hr>
-                                            <!--  vì cần chuyển id của user về userController -> phải dùng form -->
-                                            <form:form
-                                                method="post"
-                                                action="/admin/user/delete"
-                                                modelAttribute="userFormData"
-                                            >
-                                            <!-- dùng input để gán id cho userFormData -->
-                                            <div style = "display: none;">
-                                                <label for="id" class="form-label">Id</label>
-                                                <form:input type="text" class="form-control" path="id" value = "${id}" />
+                                            <div class="d-flex justify-content-between">
+                                                <h3>Table users id = ${id}</h3>
                                             </div>
-                                            <div class="alert alert-danger">
-                                                Are you sure to delete this user ?
+                
+                                            <hr/>
+                                            <div class="card" style="width: 60%;">
+                                                <div class="card-header">
+                                                Detail information
+                                                </div>
+                                                <ul class="list-group list-group-flush">
+                                                <li class="list-group-item">Id : ${user.id}</li>
+                                                <li class="list-group-item">Email : ${user.email}</li>
+                                                <li class="list-group-item">Full name : ${user.fullName}</li>
+                                                <li class="list-group-item">Address : ${user.address}</li>
+                                                <li class="list-group-item">phone : ${user.phone}</li>
+                                                </ul>
                                             </div>
-                                            <button type="submit" class="btn btn-danger">Confirm</button>
-                                        </form:form>
+                                            <a href = "/admin/user" class="btn  mt-3 btn-primary">Back</a>
+                
                                         </div>
                                     </div>
-                                </div>
+                                 </div>
                             </div>
                         </div>
                     </main>
@@ -68,7 +66,5 @@
         </body>
 
         </html>
-
-
 
 
