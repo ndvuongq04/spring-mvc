@@ -49,7 +49,8 @@
                                             <hr />
 
                                             <form:form method="post" action="/admin/user/create"
-                                                modelAttribute="newUser" class="row">
+                                                modelAttribute="newUser" class="row" enctype="multipart/form-data">
+                                                <!-- enctype="multipart/form-data" : dùng để gửi file lên server  -->
                                                 <div class="mb-3 col-12 col-md-6">
                                                     <label for="email" class="form-label">Email address</label>
                                                     <form:input type="email" class="form-control" path="email" />
@@ -73,16 +74,18 @@
                                                 </div>
                                                 <div class="mb-3 col-12 col-md-6">
                                                     <label class="form-label"> Role</label>
-                                                    <select class="form-select">
-                                                        <option selected value="ADMIN">ADMIN</option>
-                                                        <option value="USER">USER</option>
-                                                    </select>
+                                                    <form:select class="form-select" path="role.name">
+                                                        <!-- path="role.name" <-> ánh xạ với thuộc tính name trong đối tượng role của user tương ứng -->
+                                                        <form:option value="ADMIN">ADMIN</form:option>
+                                                        <form:option value="USER">USER</form:option>
+                                                    </form:select>
                                                 </div>
 
                                                 <div class="mb-3 col-12 col-md-6">
                                                     <label for="formFile" class="form-label">Avatar </label>
                                                     <input class="form-control" type="file" id="avatarFile"
-                                                        accept=".png, .jpg, .jpeg" />
+                                                        accept=".png, .jpg, .jpeg" name="hoidanitFile" />
+                                                    <!-- Dùng attribute name để lưu file -> chuyển nó đển Controller  -->
                                                 </div>
                                                 <div class="col-12 mb-3">
                                                     <img style="max-height: 250px; display: none;" alt="avatar preview"

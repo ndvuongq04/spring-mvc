@@ -14,12 +14,11 @@ import jakarta.persistence.Table;
 
 // cho spring biet se tao 1 table trong database , co ten nhu class 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
     @Id // cho biet day se la ID
     @GeneratedValue(strategy = GenerationType.IDENTITY) // cho spring biet tu dong danh ID
     private long id;
-
     private String email;
     private String password;
     private String fullName;
@@ -29,13 +28,29 @@ public class User {
     private String avatar;
 
     @ManyToOne
-    // xác định tên của 1 cột trong table users  , nó dành để lưu khóa ngoại
+    // xác định tên của 1 cột trong table users , nó dành để lưu khóa ngoại
     @JoinColumn(name = "role_id")
-    private Role role ;
+    private Role role;
     // role này là khóa ngoại của table users và được lưu trong database là role_id
 
     @OneToMany(mappedBy = "user")
-    private List<Order> orders ;
+    private List<Order> orders;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
 
     public long getId() {
         return id;
@@ -99,6 +114,4 @@ public class User {
                 + ", address=" + address + ", phone=" + phone + ", avatar=" + avatar + "]";
     }
 
-    
-    
 }
