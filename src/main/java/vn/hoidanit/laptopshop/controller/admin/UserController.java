@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.ServletContext;
 import vn.hoidanit.laptopshop.domain.User;
+import vn.hoidanit.laptopshop.service.UploadFileService;
 import vn.hoidanit.laptopshop.service.UserService;
 
 @Controller
@@ -23,10 +24,12 @@ public class UserController {
     // giá trị 1 lần trong hàm tạo
     private final UserService userService;
     private final ServletContext servletContext;
+    private final UploadFileService uploadFileService;
 
-    public UserController(UserService userService, ServletContext servletContext) {
+    public UserController(UserService userService, ServletContext servletContext, UploadFileService uploadFileService) {
         this.userService = userService;
         this.servletContext = servletContext;
+        this.uploadFileService = uploadFileService;
     }
 
     @RequestMapping("/")
@@ -54,24 +57,8 @@ public class UserController {
             @RequestParam("hoidanitFile") MultipartFile file) {
         // User temp = this.userService.handleSaveUser(hoidanit);
 
-        try {
-            byte[] bytes = file.getBytes();
+        String nameFile = this.uploadFileService.handleSaveUploadFile(file, "avatar");
 
-            String rootPath = this.servletContext.getRealPath("/resources/images");
-            File dir = new File(rootPath + File.separator + "avatar");
-            if (!dir.exists())
-                dir.mkdirs();
-            // Create the file on server
-            File serverFile = new File(dir.getAbsolutePath() + File.separator +
-                    +System.currentTimeMillis() + "-" + file.getOriginalFilename());
-            BufferedOutputStream stream = new BufferedOutputStream(
-                    new FileOutputStream(serverFile));
-            stream.write(bytes);
-            stream.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
         return "redirect:/admin/user";
     }
 

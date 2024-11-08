@@ -33,16 +33,18 @@ public class UserService {
 
     // lấy ra các user có database
     public List<User> getAllUsers() {
-        return this.userRepository.findAll() ;
+        return this.userRepository.findAll();
     }
 
     // lấy ra thông tin chi tiết của người dùng
-    public User getUserById(long id){
-        return this.userRepository.findOneById(id) ;
+    public User getUserById(long id) {
+        return this.userRepository.findOneById(id);
     }
 
     // xóa 1 user
-    public void deleteUserById(long id){
-        this.userRepository.deleteById(id); ;
+    public void deleteUserById(long id) {
+        this.userRepository.deleteById(id);
+        ;
     }
+
 }
