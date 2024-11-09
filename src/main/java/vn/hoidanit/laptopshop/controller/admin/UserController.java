@@ -1,17 +1,15 @@
 package vn.hoidanit.laptopshop.controller.admin;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.ServletContext;
+import vn.hoidanit.laptopshop.domain.Role;
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.service.UploadFileService;
 import vn.hoidanit.laptopshop.service.UserService;
@@ -25,11 +23,16 @@ public class UserController {
     private final UserService userService;
     private final ServletContext servletContext;
     private final UploadFileService uploadFileService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService, ServletContext servletContext, UploadFileService uploadFileService) {
+    public UserController(UserService userService,
+            ServletContext servletContext,
+            UploadFileService uploadFileService,
+            PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.servletContext = servletContext;
         this.uploadFileService = uploadFileService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @RequestMapping("/")
@@ -49,15 +52,26 @@ public class UserController {
         return "/admin/user/create";
     }
 
-    // URL nhận data của form creat
+    // URL nhận data của form create
     @PostMapping("/admin/user/create")
     public String createUserPage(Model model,
             @ModelAttribute("newUser") User hoidanit,
             // Lấy file
             @RequestParam("hoidanitFile") MultipartFile file) {
-        // User temp = this.userService.handleSaveUser(hoidanit);
 
-        String nameFile = this.uploadFileService.handleSaveUploadFile(file, "avatar");
+        // tên file avatar
+        String avatar = this.uploadFileService.handleSaveUploadFile(file, "avatar");
+        // hashing password
+        String hashPassword = this.passwordEncoder.encode(hoidanit.getPassword());
+        // Lấy object Role thông qua role name
+        Role roleTemp = this.userService.getRoleByName(hoidanit.getRole().getName());
+        // set data
+        hoidanit.setAvatar(avatar);
+        hoidanit.setPassword(hashPassword);
+        hoidanit.setRole(roleTemp);
+
+        // save hoidanit
+        User temp = this.userService.handleSaveUser(hoidanit);
 
         return "redirect:/admin/user";
     }
