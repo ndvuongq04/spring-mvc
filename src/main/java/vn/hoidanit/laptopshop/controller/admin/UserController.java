@@ -121,6 +121,10 @@ public class UserController {
             currentUser.setFullName(userFormData.getFullName());
             currentUser.setAddress(userFormData.getAddress());
             currentUser.setPhone(userFormData.getPhone());
+            // Save role
+            // Lấy đối tượng role by role name
+            Role roleTemp = this.userService.getRoleByName(userFormData.getRole().getName());
+            currentUser.setRole(roleTemp);
         }
         User temp = this.userService.handleSaveUser(currentUser);
         System.out.println(temp);
@@ -128,7 +132,7 @@ public class UserController {
         return "redirect:/admin/user";
     }
 
-    // URL -> update user
+    // URL -> delte user
     @GetMapping("/admin/user/delete/{id}")
     public String getDeletePage(Model model, @PathVariable long id) {
         System.out.println("run here getDeletePage ");

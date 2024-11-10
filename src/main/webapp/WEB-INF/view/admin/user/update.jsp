@@ -65,6 +65,14 @@
                                                         <label class="form-label">Phone</label>
                                                         <form:input type="text" class="form-control" path="phone" />
                                                     </div>
+                                                    <div class="mb-3 col-12 col-md-6">
+                                                        <label class="form-label"> Role</label>
+                                                        <form:select class="form-select" path="role.name">
+                                                            <!-- path="role.name" <-> ánh xạ với thuộc tính name trong đối tượng role của user tương ứng -->
+                                                            <form:option value="ADMIN">ADMIN</form:option>
+                                                            <form:option value="USER">USER</form:option>
+                                                        </form:select>
+                                                    </div>
                                                     <button type="submit" class="btn btn-warning"
                                                         style="width : 100%">Update</button>
                                                 </form:form>
