@@ -20,22 +20,9 @@
 
         <body>
             hello from hello.jsp
-            <h1>
-                <!-- in du lieu tu controller den view  -->
-                ${eric}
-            </h1>
-            <h2>
-                ${hoiDanIt}
-            </h2>
-            <!-- test sử dụng dữ liệu được submit lên từ form -->
-            <h3> Email : ${newUser.email}</h3>
-            <h3> password : ${newUser.password}</h3>
-            <h3> fullName : ${newUser.fullName}</h3>
-            <h3> Address : ${newUser.address}</h3>
-            <h3> Phone : ${newUser.phone}</h3>
-
-            <!-- test xem đã ăn bootstrap chưa  -->
-            <button class="btn btn-success">Submit</button>
+            <div class="container">
+                <h1>Chúc mừng bạn đã thêm 1 mới product </h1>
+            </div>
         </body>
 
         </html>
