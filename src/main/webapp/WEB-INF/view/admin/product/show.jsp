@@ -53,18 +53,19 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <th>1</th>
-                                                        <td>Tuf f15</td>
-                                                        <td>20.000.000</td>
-                                                        <td>Asus</td>
-                                                        <td>
-                                                            <a href="#" class="btn btn-success">View</a>
-                                                            <a href="#" class="btn btn-warning">Update</a>
-                                                            <a href="#" class="btn btn-danger">Delete</a>
-                                                        </td>
-                                                    </tr>
-
+                                                    <c:forEach var="product" items="${products}">
+                                                        <tr>
+                                                            <th>${product.id}</th>
+                                                            <td>${product.name}</td>
+                                                            <td>${product.price}</td>
+                                                            <td>${product.factory}</td>
+                                                            <td>
+                                                                <a href="#" class="btn btn-success">View</a>
+                                                                <a href="#" class="btn btn-warning">Update</a>
+                                                                <a href="#" class="btn btn-danger">Delete</a>
+                                                            </td>
+                                                        </tr>
+                                                    </c:forEach>
                                                 </tbody>
                                             </table>
                                         </div>

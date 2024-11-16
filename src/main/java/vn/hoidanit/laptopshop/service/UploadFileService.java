@@ -34,8 +34,8 @@ public class UploadFileService {
             // chuyển đến thư mục : /webapp/resources/images
             String rootPath = this.servletContext.getRealPath("/resources/images");
             // File.separator là : "/"
-            // Tạo ra 1 đối tượng file cho thư mục : /webapp/resources/images/avatar
-            File dir = new File(rootPath + File.separator + "avatar");
+            // Tạo ra 1 đối tượng file cho thư mục : /webapp/resources/images/targetFolder
+            File dir = new File(rootPath + File.separator + targetFolder);
             // dir đã tồn tại trên hệ thống chưa -> chưa thì tạo mới file này
             if (!dir.exists())
                 dir.mkdirs();
