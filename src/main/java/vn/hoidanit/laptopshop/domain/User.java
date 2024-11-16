@@ -2,7 +2,6 @@ package vn.hoidanit.laptopshop.domain;
 
 import java.util.List;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,6 +10,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 
 // cho spring biet se tao 1 table trong database , co ten nhu class 
 @Entity
@@ -19,8 +20,14 @@ public class User {
     @Id // cho biet day se la ID
     @GeneratedValue(strategy = GenerationType.IDENTITY) // cho spring biet tu dong danh ID
     private long id;
+
+    @Email(message = "Email không hợp lệ", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     private String email;
+
+    @Size(min = 6, message = "Password phải có tối thiểu 6 ký tự")
     private String password;
+
+    @Size(min = 6, message = "Full Name phải có tối thiểu 6 ký tự")
     private String fullName;
     private String address;
     private String phone;

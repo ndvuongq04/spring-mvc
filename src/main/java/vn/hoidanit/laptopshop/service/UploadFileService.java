@@ -20,6 +20,11 @@ public class UploadFileService {
     }
 
     public String handleSaveUploadFile(MultipartFile file, String targetFolder) {
+
+        // ảnh trống -> không lưu tên file
+        if (file.isEmpty()) {
+            return "";
+        }
         // tên file
         String finalName = "";
         try {

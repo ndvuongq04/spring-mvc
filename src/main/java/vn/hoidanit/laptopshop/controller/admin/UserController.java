@@ -5,10 +5,13 @@ import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.ServletContext;
+import jakarta.validation.Valid;
 import vn.hoidanit.laptopshop.domain.Role;
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.service.UploadFileService;
@@ -55,9 +58,21 @@ public class UserController {
     // URL nhận data của form create
     @PostMapping("/admin/user/create")
     public String createUserPage(Model model,
-            @ModelAttribute("newUser") User hoidanit,
+            @ModelAttribute("newUser") @Valid User hoidanit, // để lấy các thuộc tính dc validate
+            BindingResult newUserBindingResult, // để hứng lỗi
             // Lấy file
             @RequestParam("hoidanitFile") MultipartFile file) {
+
+        // in ra lỗi lên terminal
+        List<FieldError> errors = newUserBindingResult.getFieldErrors();
+        for (FieldError error : errors) {
+            System.out.println(">>>>>>" + error.getField() + " - " + error.getDefaultMessage());
+        }
+        // validate
+        if (newUserBindingResult.hasErrors()) {
+            // nó vẫn giữ lại thông báo lỗi lên trang hiện tại
+            return "/admin/user/create";
+        }
 
         // tên file avatar
         String avatar = this.uploadFileService.handleSaveUploadFile(file, "avatar");
@@ -112,7 +127,28 @@ public class UserController {
 
     // URL -> nhận data update user
     @PostMapping(value = "/admin/user/update")
-    public String updateUserPage(Model model, @ModelAttribute("updateUser") User userFormData) {
+    public String updateUserPage(Model model,
+            @ModelAttribute("updateUser") @Valid User userFormData,
+            BindingResult updateUserBindingResult) {
+
+        // hiển thị lỗi lên terminal
+        List<FieldError> errors = updateUserBindingResult.getFieldErrors();
+        for (FieldError error : errors) {
+            System.out.println(">>>>>>>" + error.getField() + " - " + error.getDefaultMessage());
+        }
+        // chuyển trang khi có lỗi
+        if (updateUserBindingResult.hasErrors()) {
+            // đẩy lại data đẫ có trước đó -> lên view
+            // vì là chúng ta validate fullName -> sẽ không lưu trữ tên cũ nữa -> để nó
+            // trống -> để còn hiển thị lỗi chứ
+            User userFromDatabase = this.userService.getUserById(userFormData.getId());
+            userFormData.setEmail(userFromDatabase.getEmail());
+            userFormData.setAddress(userFromDatabase.getAddress());
+            userFormData.setPhone(userFromDatabase.getPhone());
+            userFormData.setRole(userFromDatabase.getRole());
+            model.addAttribute("updateUser", userFormData);
+            return "/admin/user/update";
+        }
         // userFormData : chỉ có các thông tin : fullName , address ,phone , id , còn
         // lại là null
         User currentUser = this.userService.getUserById(userFormData.getId());
