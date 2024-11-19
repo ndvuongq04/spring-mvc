@@ -12,4 +12,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Product save(Product vuong); // lưu 1 sản phẩm
 
     List<Product> findAll(); // lấy tất cả các product
+
+    void deleteById(long id);
+
+    Product getById(long id);
+
 }
