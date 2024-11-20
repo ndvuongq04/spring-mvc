@@ -1,11 +1,13 @@
 package vn.hoidanit.laptopshop.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 @Entity
@@ -22,8 +24,11 @@ public class Product {
     private double price;
 
     private String image;
-    @NotEmpty(message = "detailDesc sản phẩm không được để trống")
+    @NotNull
+    @NotEmpty(message = "detailDesc không được để trống")
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String detailDesc;
+
     @NotEmpty(message = "shortDesc sản phẩm không được để trống")
     private String shortDesc;
     @Positive(message = "Số lượng cần lớn hơn 0")
