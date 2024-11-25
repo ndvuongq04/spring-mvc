@@ -8,7 +8,7 @@ public class RegisterDTO {
     private String lastName;
     private String email;
     private String password;
-    private String ConfirmPassword;
+    private String confirmPassword;
 
     public String getFirstName() {
         return firstName;
@@ -43,11 +43,11 @@ public class RegisterDTO {
     }
 
     public String getConfirmPassword() {
-        return ConfirmPassword;
+        return confirmPassword;
     }
 
     public void setConfirmPassword(String confirmPassword) {
-        ConfirmPassword = confirmPassword;
+        this.confirmPassword = confirmPassword;
     }
 
 }

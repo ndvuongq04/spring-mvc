@@ -55,10 +55,9 @@ public class HomePageController {
             @ModelAttribute("registerUser") @Valid RegisterDTO registerUser,
             BindingResult bindingResult) {
 
-        // in ra lỗi lên terminal
-        List<FieldError> errors = bindingResult.getFieldErrors();
-        for (FieldError error : errors) {
-            System.out.println(">>>>>>" + error.getField() + " - " + error.getDefaultMessage());
+        // ktra lỗi
+        if (bindingResult.hasErrors()) {
+            return "client/auth/register";
         }
         User user = this.userService.registerDTOtoUser(registerUser);
 
