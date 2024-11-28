@@ -41,8 +41,8 @@
 
                                                     <div
                                                         class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                        <a class="btn btn-primary" style="width : 100%;"
-                                                            href="index.html">Login</a>
+                                                        <button type="submit" class="btn btn-primary" btn-block
+                                                            style="width:100%;">Login</button>
                                                     </div>
                                                 </form>
                                             </div>
