@@ -52,7 +52,7 @@ public class UserController {
     @RequestMapping("/admin/user/create") // mac dinh laf method = get
     public String getUserPage(Model model) {
         model.addAttribute("newUser", new User());
-        return "/admin/user/create";
+        return "admin/user/create";
     }
 
     // URL nhận data của form create
@@ -97,7 +97,7 @@ public class UserController {
         List<User> users = this.userService.getAllUsers();
         // Lưu data và spring rồi chuyển đến view
         model.addAttribute("users1", users);
-        return "/admin/user/show";
+        return "admin/user/show";
     }
 
     // URL -> view user
@@ -112,7 +112,7 @@ public class UserController {
          */
         User user = this.userService.getUserById(id);
         model.addAttribute("user", user);
-        return "/admin/user/detail";
+        return "admin/user/detail";
     }
 
     // URL -> update user
@@ -122,7 +122,7 @@ public class UserController {
         User currentUser = this.userService.getUserById(id);
         model.addAttribute("updateUser", currentUser);
 
-        return "/admin/user/update";
+        return "admin/user/update";
     }
 
     // URL -> nhận data update user
@@ -147,7 +147,7 @@ public class UserController {
             userFormData.setPhone(userFromDatabase.getPhone());
             userFormData.setRole(userFromDatabase.getRole());
             model.addAttribute("updateUser", userFormData);
-            return "/admin/user/update";
+            return "admin/user/update";
         }
         // userFormData : chỉ có các thông tin : fullName , address ,phone , id , còn
         // lại là null
@@ -174,7 +174,7 @@ public class UserController {
         System.out.println("run here getDeletePage ");
         model.addAttribute("id", id);
         model.addAttribute("userFormData", new User());
-        return "/admin/user/delete";
+        return "admin/user/delete";
     }
 
     // URL -> nhận data delete user

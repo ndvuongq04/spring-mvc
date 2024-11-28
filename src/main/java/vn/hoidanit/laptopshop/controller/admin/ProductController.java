@@ -76,7 +76,7 @@ public class ProductController {
             @PathVariable long id) {
         model.addAttribute("userFormData", userFormData);
         model.addAttribute("id", id);
-        return "/admin/product/delete";
+        return "admin/product/delete";
     }
 
     @PostMapping(value = "/admin/product/delete")
@@ -93,7 +93,7 @@ public class ProductController {
         Product productGoDetail = this.productService.getProductById(id);
         model.addAttribute("productGoDetail", productGoDetail);
         model.addAttribute("id", id);
-        return "/admin/product/detail";
+        return "admin/product/detail";
     }
 
     // update
