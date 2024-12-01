@@ -71,7 +71,7 @@ public class UserController {
         // validate
         if (newUserBindingResult.hasErrors()) {
             // nó vẫn giữ lại thông báo lỗi lên trang hiện tại
-            return "/admin/user/create";
+            return "admin/user/create";
         }
 
         // tên file avatar

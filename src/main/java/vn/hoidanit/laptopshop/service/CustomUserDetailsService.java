@@ -32,7 +32,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new User(
                 user.getEmail(),
                 user.getPassword(),
-                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+                // mặc định spring sẽ thêm "ROLE_" vào trước role name -> cần truyền nó vào
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole().getName())));
 
     }
 
