@@ -35,7 +35,7 @@
                                                     </c:if>
                                                     <!-- Thông báo khi đã logout -->
                                                     <c:if test="${param.logout != null}">
-                                                        <div class="my-2" style="color: green;">Login success.
+                                                        <div class="my-2" style="color: green;">Logout success.
                                                         </div>
                                                     </c:if>
 
