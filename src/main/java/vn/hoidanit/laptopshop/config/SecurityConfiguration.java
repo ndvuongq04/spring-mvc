@@ -7,6 +7,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -79,6 +80,18 @@ public class SecurityConfiguration {
 
                         .anyRequest().authenticated())
 
+                .sessionManagement((sessionManagement) -> sessionManagement
+                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS) // khi người dùng chưa có session -> tạo
+                                                                             // mới
+                        .invalidSessionUrl("/logout?expired") // hết hạn session -> tự động logout
+                        .maximumSessions(1) // tại 1 thời điểm -> chỉ có 1 người đăng nhập đc vào tk đó
+                        .maxSessionsPreventsLogin(false)) // nếu có hơn 1 người -> người thứ 2 đăng nhập -> đá người trc
+                                                          // ; còn true -> chờ người 1 hết phiên đăng nhập thì người 2
+                                                          // mới dc vào
+                .logout(logout -> logout.deleteCookies("JSESSIONID").invalidateHttpSession(true)) // mỗi lần đăng xuất
+                                                                                                  // -> xóa cookie này
+                                                                                                  // đi , và báo hiệu
+                                                                                                  // cho server
                 // sử dụng cơ chế remember me
                 .rememberMe((rememberMe) -> rememberMe
                         .rememberMeServices(rememberMeServices()))
