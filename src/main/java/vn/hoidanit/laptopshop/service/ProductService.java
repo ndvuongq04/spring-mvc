@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.servlet.http.HttpSession;
 import vn.hoidanit.laptopshop.domain.Cart;
 import vn.hoidanit.laptopshop.domain.CartDetail;
 import vn.hoidanit.laptopshop.domain.Product;
@@ -51,7 +52,7 @@ public class ProductService {
         return this.productRepository.findById(id);
     }
 
-    public void handleAddProductToCart(String email, long productId) {
+    public void handleAddProductToCart(String email, long productId, HttpSession session) {
         User user = this.userService.getUserByEmail(email);
         if (user != null) {
             // ktra user co cart hay chua
@@ -60,7 +61,7 @@ public class ProductService {
             if (cart == null) {
                 // create cart
                 Cart newCart = new Cart();
-                newCart.setSum(1);
+                newCart.setSum(0);
                 newCart.setUser(user);
 
                 // save cart
@@ -75,13 +76,37 @@ public class ProductService {
             if (prdOptional.isPresent()) {
                 Product product = prdOptional.get(); // lay doi tuong product tu optional
 
-                CartDetail cartDetail = new CartDetail();
-                cartDetail.setCart(cart);
-                cartDetail.setProduct(product);
-                cartDetail.setQuantity(1);
-                cartDetail.setPrice(product.getPrice());
+                /*
+                 * ktra xem product có card_id đã tồn tại trong database chưa
+                 * -> nếu rồi -> người dùng đã thêm sp này vào rồi -> chỉ cần tăng quantity lên
+                 * nữa là OK
+                 * -> nếu chưa -> thực hiện tạo mới cart_detail thôi
+                 */
+                CartDetail oldCartDetail = this.cartDetailRepository.findCartDetailByCartAndProduct(cart, product);
+                if (oldCartDetail == null) {
 
-                this.cartDetailRepository.save(cartDetail);
+                    // chưa có
+                    CartDetail cartDetail = new CartDetail();
+                    cartDetail.setCart(cart);
+                    cartDetail.setProduct(product);
+                    cartDetail.setQuantity(1);
+                    cartDetail.setPrice(product.getPrice());
+
+                    // cập nhật cart (sum)
+                    long sum = cart.getSum() + 1;
+                    cart.setSum(sum);
+                    this.cartRepository.save(cart);
+                    session.setAttribute("sum", sum);
+
+                    // lưu cartDetail
+                    this.cartDetailRepository.save(cartDetail);
+
+                } else {
+
+                    // có rồi
+                    oldCartDetail.setQuantity(oldCartDetail.getQuantity() + 1);
+                    this.cartDetailRepository.save(oldCartDetail);
+                }
 
             }
 
