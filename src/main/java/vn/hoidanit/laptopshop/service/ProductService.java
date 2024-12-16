@@ -57,9 +57,10 @@ public class ProductService {
         User user = this.userService.getUserByEmail(email);
         if (user != null) {
             // ktra user co cart hay chua
-            Cart cart = this.cartRepository.findCartByUser(user);
+            Optional<Cart> opCart = this.cartRepository.findCartByUser(user);
+            Cart cart = new Cart();
+            if (opCart.isEmpty()) {
 
-            if (cart == null) {
                 // create cart
                 Cart newCart = new Cart();
                 newCart.setSum(0);
@@ -67,8 +68,10 @@ public class ProductService {
 
                 // save cart
                 cart = this.cartRepository.save(newCart);
-            }
+            } else {
+                cart = opCart.get();
 
+            }
             // cart luon co gia tri
 
             // save cart_detail
@@ -115,7 +118,7 @@ public class ProductService {
 
     }
 
-    public Cart getCartByUser(User user) {
+    public Optional<Cart> getCartByUser(User user) {
         return this.cartRepository.findCartByUser(user);
     }
 }

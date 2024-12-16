@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ItemController {
@@ -58,7 +59,11 @@ public class ItemController {
         user.setId(id);
 
         // lấy id_cart thông qua user
-        Cart cart = this.productService.getCartByUser(user);
+        // cart chưa có sản phẩm nào -> chuyển đến trang tbao lỗi
+        if (this.productService.getCartByUser(user).isEmpty()) {
+            return "redirect:/error-cart";
+        }
+        Cart cart = this.productService.getCartByUser(user).get();
         // lấy cartDetail thông qua cart
         List<CartDetail> cartDetails = cart.getCartDetail();
 
@@ -72,4 +77,10 @@ public class ItemController {
         model.addAttribute("totalPrice", totalPrice);
         return "client/cart/show";
     }
+
+    @GetMapping("/error-cart")
+    public String getPageErrorCart(Model model) {
+        return "client/cart/errorCartNull";
+    }
+
 }
