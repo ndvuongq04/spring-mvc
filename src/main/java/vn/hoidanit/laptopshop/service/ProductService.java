@@ -53,6 +53,7 @@ public class ProductService {
     }
 
     public void handleAddProductToCart(String email, long productId, HttpSession session) {
+
         User user = this.userService.getUserByEmail(email);
         if (user != null) {
             // ktra user co cart hay chua
@@ -112,5 +113,9 @@ public class ProductService {
 
         }
 
+    }
+
+    public Cart getCartByUser(User user) {
+        return this.cartRepository.findCartByUser(user);
     }
 }
