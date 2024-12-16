@@ -1,6 +1,8 @@
 package vn.hoidanit.laptopshop.controller.client;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,13 +61,10 @@ public class ItemController {
         user.setId(id);
 
         // lấy id_cart thông qua user
-        // cart chưa có sản phẩm nào -> chuyển đến trang tbao lỗi
-        if (this.productService.getCartByUser(user).isEmpty()) {
-            return "redirect:/error-cart";
-        }
-        Cart cart = this.productService.getCartByUser(user).get();
+
+        Optional<Cart> OpCart = this.productService.getCartByUser(user);
         // lấy cartDetail thông qua cart
-        List<CartDetail> cartDetails = cart.getCartDetail();
+        List<CartDetail> cartDetails = OpCart.isEmpty() ? new ArrayList<CartDetail>() : OpCart.get().getCartDetail();
 
         double totalPrice = 0;
         for (CartDetail cd : cartDetails) {
@@ -78,9 +77,9 @@ public class ItemController {
         return "client/cart/show";
     }
 
-    @GetMapping("/error-cart")
-    public String getPageErrorCart(Model model) {
-        return "client/cart/errorCartNull";
-    }
+    // @GetMapping("/error-cart")
+    // public String getPageErrorCart(Model model) {
+    // return "client/cart/errorCartNull";
+    // }
 
 }
