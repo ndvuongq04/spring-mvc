@@ -12,4 +12,7 @@ import vn.hoidanit.laptopshop.domain.User;
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
     Optional<Cart> findCartByUser(User user);
+
+    Cart findByUser(User user);
+
 }

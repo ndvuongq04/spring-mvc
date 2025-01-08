@@ -1,5 +1,6 @@
 package vn.hoidanit.laptopshop.controller.client;
 
+import java.net.http.HttpRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -7,10 +8,12 @@ import java.util.Optional;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import vn.hoidanit.laptopshop.domain.Cart;
 import vn.hoidanit.laptopshop.domain.CartDetail;
+import vn.hoidanit.laptopshop.domain.Order;
 import vn.hoidanit.laptopshop.domain.Product;
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.service.ProductService;
@@ -63,9 +66,11 @@ public class ItemController {
 
         // lấy id_cart thông qua user
 
-        Optional<Cart> OpCart = this.productService.getCartByUser(user);
+        // Optional<Cart> OpCart = this.productService.getCartByUser(user);
+
+        Cart cart = this.productService.fetchCartByUser(user);
         // lấy cartDetail thông qua cart
-        List<CartDetail> cartDetails = OpCart.isEmpty() ? new ArrayList<CartDetail>() : OpCart.get().getCartDetail();
+        List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
 
         double totalPrice = 0;
         for (CartDetail cd : cartDetails) {
@@ -75,6 +80,7 @@ public class ItemController {
         // truyền data qua view
         model.addAttribute("cartDetails", cartDetails);
         model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("cart", cart);
         return "client/cart/show";
     }
 
@@ -90,6 +96,42 @@ public class ItemController {
         this.productService.handleDeleteCartDetail(session, cartDetailId);
 
         return "redirect:/cart";
+    }
+
+    @PostMapping("/confirm-checkout")
+    public String getCheckOutPage(@ModelAttribute("cart") Cart cart) {
+        List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
+
+        // cập nhật cartDetail thông qua id cartDetail
+        this.productService.handleUpdateCartDetailBeforeCheckout(cartDetails);
+
+        return "redirect:/checkout";
+    }
+
+    @GetMapping("/checkout")
+    public String getCheckOutPage(Model model, HttpServletRequest request) {
+        User user = new User();
+        HttpSession session = request.getSession(false);
+        user.setId((long) session.getAttribute("id"));
+
+        Cart cart = this.productService.fetchCartByUser(user);
+        List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
+
+        double totalPrice = 0;
+        for (CartDetail cd : cartDetails) {
+            totalPrice += cd.getPrice() * cd.getQuantity();
+        }
+
+        model.addAttribute("cartDetails", cartDetails);
+        model.addAttribute("totalPrice", totalPrice);
+
+        return "client/cart/checkout";
+    }
+
+    @PostMapping("/place-order")
+    public String handlePlaceOrder(@ModelAttribute("order") Order order) {
+        Order order1 = order;
+        return "redirect:/";
     }
 
 }

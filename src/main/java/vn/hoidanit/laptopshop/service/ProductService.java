@@ -119,6 +119,10 @@ public class ProductService {
 
     }
 
+    public Cart fetchCartByUser(User user) {
+        return this.cartRepository.findByUser(user);
+    }
+
     public Optional<Cart> getCartByUser(User user) {
         return this.cartRepository.findCartByUser(user);
     }
@@ -143,6 +147,18 @@ public class ProductService {
                 session.setAttribute("sum", 0);
             }
 
+        }
+    }
+
+    public void handleUpdateCartDetailBeforeCheckout(List<CartDetail> cartDetails) {
+        for (CartDetail cartDetail : cartDetails) {
+            Optional<CartDetail> opCartDetail = this.cartDetailRepository.findById(cartDetail.getId());
+
+            if (opCartDetail.isPresent()) { // ktra opCartDetail có giá trị hay không
+                CartDetail currentCartDetail = opCartDetail.get();
+                currentCartDetail.setQuantity(cartDetail.getQuantity());
+                this.cartDetailRepository.save(currentCartDetail);
+            }
         }
     }
 }

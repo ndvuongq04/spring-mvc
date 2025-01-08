@@ -1,6 +1,8 @@
 package vn.hoidanit.laptopshop.repository;
 
+import java.nio.file.OpenOption;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -16,4 +18,6 @@ public interface CartDetailRepository extends JpaRepository<CartDetail, Long> {
     List<CartDetail> findCartDetailByCart(Cart cart);
 
     void deleteCartDetailByCartAndProduct(Cart cart, Product product);
+
+    Optional<CartDetail> findById(long id);
 }
