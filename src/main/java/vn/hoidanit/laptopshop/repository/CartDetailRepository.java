@@ -14,4 +14,6 @@ public interface CartDetailRepository extends JpaRepository<CartDetail, Long> {
 
     // lấy ra tất cả sản phẩm của người dùng có id_cart này
     List<CartDetail> findCartDetailByCart(Cart cart);
+
+    void deleteCartDetailByCartAndProduct(Cart cart, Product product);
 }
