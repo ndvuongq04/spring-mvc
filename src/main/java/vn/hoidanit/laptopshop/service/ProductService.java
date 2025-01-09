@@ -9,10 +9,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import vn.hoidanit.laptopshop.domain.Cart;
 import vn.hoidanit.laptopshop.domain.CartDetail;
+import vn.hoidanit.laptopshop.domain.Order;
+import vn.hoidanit.laptopshop.domain.OrderDetail;
 import vn.hoidanit.laptopshop.domain.Product;
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.repository.CartDetailRepository;
 import vn.hoidanit.laptopshop.repository.CartRepository;
+import vn.hoidanit.laptopshop.repository.OrderDetailRepository;
+import vn.hoidanit.laptopshop.repository.OrderRepository;
 import vn.hoidanit.laptopshop.repository.ProductRepository;
 
 @Service
@@ -21,16 +25,22 @@ public class ProductService {
     private final CartRepository cartRepository;
     private final CartDetailRepository cartDetailRepository;
     private final UserService userService;
+    private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailRepository;
 
     // DI
     public ProductService(ProductRepository productRepository,
             CartDetailRepository cartDetailRepository,
             CartRepository cartRepository,
-            UserService userService) {
+            UserService userService,
+            OrderRepository orderRepository,
+            OrderDetailRepository orderDetailRepository) {
         this.productRepository = productRepository;
         this.cartDetailRepository = cartDetailRepository;
         this.cartRepository = cartRepository;
         this.userService = userService;
+        this.orderRepository = orderRepository;
+        this.orderDetailRepository = orderDetailRepository;
     }
 
     public Product handleSaveProduct(Product vuong) {
@@ -160,5 +170,43 @@ public class ProductService {
                 this.cartDetailRepository.save(currentCartDetail);
             }
         }
+    }
+
+    public void handlePlaceOrder(
+            Order order, User user,
+            HttpSession session) {
+
+        // 01 : create order
+        order.setUser(user);
+        order = this.orderRepository.save(order);
+
+        // 02 : create orderDetail
+        Cart cart = this.cartRepository.findByUser(user);
+        if (cart != null) {
+            List<CartDetail> cartDetails = cart.getCartDetails();
+            for (CartDetail cd : cartDetails) {
+
+                OrderDetail od = new OrderDetail();
+                od.setOrder(order);
+                od.setProduct(cd.getProduct());
+                od.setPrice(cd.getPrice());
+                od.setQuantity(cd.getQuantity());
+
+                this.orderDetailRepository.save(od); // save orderDetail
+
+            }
+
+            // 03 : delete cart and cartDetail
+            for (CartDetail cd : cartDetails) {
+                this.cartDetailRepository.deleteById(cd.getId());
+            }
+
+            this.cartRepository.deleteById(cart.getId());
+
+            // 04 : update sum cart
+            session.setAttribute("sum", 0);
+
+        }
+
     }
 }

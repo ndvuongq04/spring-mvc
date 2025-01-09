@@ -129,9 +129,21 @@ public class ItemController {
     }
 
     @PostMapping("/place-order")
-    public String handlePlaceOrder(@ModelAttribute("order") Order order) {
+    public String handlePlaceOrder(@ModelAttribute("order") Order order, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+
+        User user = new User();
+        user.setId((long) session.getAttribute("id"));
+
         Order order1 = order;
-        return "redirect:/";
+
+        this.productService.handlePlaceOrder(order1, user, session);
+        return "redirect:/thanks";
+    }
+
+    @GetMapping("/thanks")
+    public String getThanksPage() {
+        return "client/cart/thanks";
     }
 
 }
