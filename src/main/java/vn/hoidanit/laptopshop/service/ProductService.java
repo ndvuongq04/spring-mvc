@@ -178,22 +178,28 @@ public class ProductService {
 
         // 01 : create order
         order.setUser(user);
-        order = this.orderRepository.save(order);
 
         // 02 : create orderDetail
         Cart cart = this.cartRepository.findByUser(user);
         if (cart != null) {
             List<CartDetail> cartDetails = cart.getCartDetails();
-            for (CartDetail cd : cartDetails) {
+            long sum = 0;
 
+            for (CartDetail cd : cartDetails) {
+                sum += cd.getPrice() * cd.getQuantity();
+            }
+            order.setTotalPrice(sum); // set TotalPrice
+            order.setStatus("PENDING");
+            order = this.orderRepository.save(order); // order
+
+            for (CartDetail cd : cartDetails) {
                 OrderDetail od = new OrderDetail();
                 od.setOrder(order);
-                od.setProduct(cd.getProduct());
                 od.setPrice(cd.getPrice());
+                od.setProduct(cd.getProduct());
                 od.setQuantity(cd.getQuantity());
 
-                this.orderDetailRepository.save(od); // save orderDetail
-
+                this.orderDetailRepository.save(od); // save order detail
             }
 
             // 03 : delete cart and cartDetail
