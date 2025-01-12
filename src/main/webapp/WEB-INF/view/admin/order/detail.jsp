@@ -11,7 +11,7 @@
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
                 <meta name="description" content="Hỏi Dân IT - Dự án laptopshop" />
                 <meta name="author" content="Hỏi Dân IT" />
-                <title>Dashboard - Nguyễn Đình Vượng</title>
+                <title>View - Nguyễn Đình Vượng</title>
                 <link href="/css/styles.css" rel="stylesheet" />
                 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
             </head>
@@ -23,13 +23,13 @@
                     <div id="layoutSidenav_content">
                         <main>
                             <div class="container-fluid px-4">
-                                <h1 class="mt-4">Dashboard</h1>
+                                <h1 class="mt-4">Manage Order</h1>
                                 <ol class="breadcrumb mb-4">
                                     <li class="breadcrumb-item active"><a href="/admin"
                                             style="text-decoration: none">Dashboard</a></li>
-                                    <li class="breadcrumb-item active">order</li>
-
-
+                                    <li class="breadcrumb-item active"><a href="/admin/order"
+                                            style="text-decoration: none">Order</a></li>
+                                    <li class="breadcrumb-item active">View</li>
                                 </ol>
                                 <!-- Nội dung -->
                                 <div>
@@ -37,37 +37,58 @@
                                         <div class="row">
                                             <div class="col-12 mx-auto">
                                                 <div class="d-flex justify-content-between">
-                                                    <h3>Table orders</h3>
+                                                    <h3>Order Detail width id = ${id}</h3>
                                                 </div>
 
                                                 <hr />
                                                 <table class="table table-bordered table-hover">
                                                     <thead>
                                                         <tr>
-                                                            <th>ID</th>
-                                                            <th>Total Price </th>
-                                                            <th>User name</th>
-                                                            <th>Status</th>
-                                                            <th>Action</th>
+                                                            <th>Sản phẩm</th>
+                                                            <th>Tên </th>
+                                                            <th>Giá cả </th>
+                                                            <th>Số lượng </th>
+                                                            <th>Thành tiền </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <c:forEach var="od" items="${orders}">
+                                                        <c:forEach var="od" items="${orderDetails}">
                                                             <tr>
-                                                                <th>${od.id}</th>
+                                                                <th scope="row">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <img src="/images/product/${od.product.image}"
+                                                                            class="img-fluid me-5 rounded-circle"
+                                                                            style="width: 80px; height: 80px;" alt="">
+                                                                    </div>
+                                                                </th>
+
                                                                 <td>
-                                                                    <fmt:formatNumber type="number"
-                                                                        value="${od.totalPrice}" /> đ
+                                                                    <p class="mb-0 mt-4">
+                                                                        <a href="/product/${od.product.id}"
+                                                                            target="_blank">
+                                                                            ${od.product.name}
+                                                                        </a>
+                                                                    </p>
                                                                 </td>
-                                                                <td>${od.user.fullName}</td>
-                                                                <td>${od.status}</td>
+
                                                                 <td>
-                                                                    <a href="/admin/order/${od.id}"
-                                                                        class="btn btn-success">View</a>
-                                                                    <a href="/admin/order/update/${od.id}"
-                                                                        class="btn btn-warning">Update</a>
-                                                                    <a href="/admin/order/delete/${od.id}"
-                                                                        class="btn btn-danger">Delete</a>
+                                                                    <p class="mb-0 mt-4">
+                                                                        <fmt:formatNumber type="number"
+                                                                            value="${od.price}" /> đ
+                                                                    </p>
+                                                                </td>
+
+                                                                <td>
+                                                                    <p class="mb-0 mt-4">
+                                                                        ${od.quantity}
+                                                                    </p>
+                                                                </td>
+
+                                                                <td>
+                                                                    <p class="mb-0 mt-4">
+                                                                        <fmt:formatNumber type="number"
+                                                                            value="${od.quantity * od.price}" /> đ
+                                                                    </p>
                                                                 </td>
                                                             </tr>
                                                         </c:forEach>
