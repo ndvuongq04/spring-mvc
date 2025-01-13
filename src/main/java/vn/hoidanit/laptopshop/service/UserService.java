@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import vn.hoidanit.laptopshop.domain.Role;
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.domain.dto.RegisterDTO;
+import vn.hoidanit.laptopshop.repository.OrderRepository;
+import vn.hoidanit.laptopshop.repository.ProductRepository;
 import vn.hoidanit.laptopshop.repository.RoleRepository;
 import vn.hoidanit.laptopshop.repository.UserRepository;
 
@@ -16,10 +18,16 @@ public class UserService {
     // DI : dependency injection
     private final UserRepository userRepository; // Đảm bảo tính bất biến ( final )
     private final RoleRepository roleRepository;
+    private final ProductRepository productRepository;
+    private final OrderRepository orderRepository;
 
     public UserService(UserRepository userRepository,
+            ProductRepository productRepository,
+            OrderRepository orderRepository,
             RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.orderRepository = orderRepository;
+        this.productRepository = productRepository;
         this.roleRepository = roleRepository;
     }
 
@@ -73,5 +81,17 @@ public class UserService {
 
     public User getUserByEmail(String email) {
         return this.userRepository.findByEmail(email);
+    }
+
+    public long handleCountUsers() {
+        return this.userRepository.count();
+    }
+
+    public long handleCountProducts() {
+        return this.productRepository.count();
+    }
+
+    public long handleCountOrders() {
+        return this.orderRepository.count();
     }
 }
