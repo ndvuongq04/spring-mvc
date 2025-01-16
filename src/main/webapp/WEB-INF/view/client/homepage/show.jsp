@@ -102,6 +102,9 @@
                                                                         <input type="hidden"
                                                                             name="${_csrf.parameterName}"
                                                                             value="${_csrf.token}" />
+                                                                        <!--  khi them sp vào giỏ hàng ở homepage thì mặc định sl là 1  -->
+                                                                        <input type="hidden" name="quantity"
+                                                                            value="1" />
                                                                         <button
                                                                             class=" mx-auto btn  border border-secondary rounded-pill px-3 text-primary"><i
                                                                                 class="fa fa-shopping-bag me-2 text-primary"></i>

@@ -63,7 +63,7 @@ public class ProductService {
         return this.productRepository.findById(id);
     }
 
-    public void handleAddProductToCart(String email, long productId, HttpSession session) {
+    public void handleAddProductToCart(String email, long productId, HttpSession session, long quantity) {
 
         User user = this.userService.getUserByEmail(email);
         if (user != null) {
@@ -104,7 +104,7 @@ public class ProductService {
                     CartDetail cartDetail = new CartDetail();
                     cartDetail.setCart(cart);
                     cartDetail.setProduct(product);
-                    cartDetail.setQuantity(1);
+                    cartDetail.setQuantity(quantity);
                     cartDetail.setPrice(product.getPrice());
 
                     // cập nhật cart (sum)
@@ -119,7 +119,7 @@ public class ProductService {
                 } else {
 
                     // có rồi
-                    oldCartDetail.setQuantity(oldCartDetail.getQuantity() + 1);
+                    oldCartDetail.setQuantity(oldCartDetail.getQuantity() + quantity);
                     this.cartDetailRepository.save(oldCartDetail);
                 }
 
