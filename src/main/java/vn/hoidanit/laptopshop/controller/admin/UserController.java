@@ -1,7 +1,11 @@
 package vn.hoidanit.laptopshop.controller.admin;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,16 +40,6 @@ public class UserController {
         this.servletContext = servletContext;
         this.uploadFileService = uploadFileService;
         this.passwordEncoder = passwordEncoder;
-    }
-
-    @RequestMapping("/")
-    public String getHomePage(Model model) {
-        String test = this.userService.handleHello();
-        model.addAttribute("eric", test);
-        model.addAttribute("hoiDanIt", "from controller with model");
-        // lấy ra tất cả user trong database
-        List<User> temp = this.userService.getAllUsers();
-        return "hello";
     }
 
     // URL -> trang tạo mới 1 user
@@ -93,16 +87,48 @@ public class UserController {
 
     // URL -> show table user
     @RequestMapping("/admin/user")
-    public String getTableUserPage(Model model) {
-        List<User> users = this.userService.getAllUsers();
+    public String getTableUserPage(Model model,
+            @RequestParam("page") Optional<String> pageOptional) {
+
+        int page = 1;
+        try {
+            if (pageOptional.isPresent()) {
+                page = Integer.parseInt(pageOptional.get());
+            }
+            // page = 1
+        } catch (Exception e) {
+            // page = 1
+            // TODO: handle exception
+        }
+
+        Pageable pageable = PageRequest.of(page - 1, 2);
+
+        Page<User> users = this.userService.getAllUsers(pageable);
+        List<User> listUsers = users.getContent();
         // Lưu data và spring rồi chuyển đến view
-        model.addAttribute("users1", users);
+        model.addAttribute("users1", listUsers);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", users.getTotalPages());
+
         return "admin/user/show";
     }
 
     // URL -> view user
     @RequestMapping("/admin/user/{id}")
-    public String getUserDetailPage(Model model, @PathVariable long id) {
+    public String getUserDetailPage(Model model, @PathVariable long id,
+            @RequestParam("page") Optional<String> pageOptional) {
+
+        int page = 1;
+        try {
+            if (pageOptional.isPresent()) {
+                page = Integer.parseInt(pageOptional.get());
+            }
+            // page = 1
+        } catch (Exception e) {
+            // page = 1
+            // TODO: handle exception
+        }
+
         /*
          * Lấy tham số động
          * 
@@ -112,15 +138,29 @@ public class UserController {
          */
         User user = this.userService.getUserById(id);
         model.addAttribute("user", user);
+        model.addAttribute("currentPage", page);
+
         return "admin/user/detail";
     }
 
     // URL -> update user
     @RequestMapping("/admin/user/update/{id}") // mac dinh laf method = get
-    public String getUpdatePage(Model model, @PathVariable long id) {
-        System.out.println("run here getUpdatePage ");
+    public String getUpdatePage(Model model, @PathVariable long id,
+            @RequestParam("page") Optional<String> pageOptional) {
+
+        int page = 1;
+        try {
+            if (pageOptional.isPresent()) {
+                page = Integer.parseInt(pageOptional.get());
+            }
+            // page = 1
+        } catch (Exception e) {
+            // page = 1
+            // TODO: handle exception
+        }
         User currentUser = this.userService.getUserById(id);
         model.addAttribute("updateUser", currentUser);
+        model.addAttribute("currentPage", page);
 
         return "admin/user/update";
     }
@@ -170,9 +210,22 @@ public class UserController {
 
     // URL -> delte user
     @GetMapping("/admin/user/delete/{id}")
-    public String getDeletePage(Model model, @PathVariable long id) {
-        System.out.println("run here getDeletePage ");
+    public String getDeletePage(Model model, @PathVariable long id,
+            @RequestParam("page") Optional<String> pageOptional) {
+
+        int page = 1;
+        try {
+            if (pageOptional.isPresent()) {
+                page = Integer.parseInt(pageOptional.get());
+            }
+            // page = 1
+        } catch (Exception e) {
+            // page = 1
+            // TODO: handle exception
+        }
         model.addAttribute("id", id);
+        model.addAttribute("currentPage", page);
+
         model.addAttribute("userFormData", new User());
         return "admin/user/delete";
     }

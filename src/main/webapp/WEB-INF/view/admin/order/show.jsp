@@ -62,11 +62,11 @@
                                                                 <td>${od.user.fullName}</td>
                                                                 <td>${od.status}</td>
                                                                 <td>
-                                                                    <a href="/admin/order/${od.id}"
+                                                                    <a href="/admin/order/${od.id}?page=${currentPage}"
                                                                         class="btn btn-success">View</a>
-                                                                    <a href="/admin/order/update/${od.id}"
+                                                                    <a href="/admin/order/update/${od.id}?page=${currentPage}"
                                                                         class="btn btn-warning">Update</a>
-                                                                    <a href="/admin/order/delete/${od.id}"
+                                                                    <a href="/admin/order/delete/${od.id}?page=${currentPage}"
                                                                         class="btn btn-danger">Delete</a>
                                                                 </td>
                                                             </tr>
@@ -74,6 +74,34 @@
 
                                                     </tbody>
                                                 </table>
+                                                <nav aria-label="Page navigation example">
+                                                    <ul class="pagination justify-content-center">
+                                                        <li class="page-item">
+                                                            <a class="${currentPage eq 1 ? 'disabled page-link' : 'page-link'}"
+                                                                href="/admin/order?page=${currentPage-1}"
+                                                                aria-label="Previous">
+                                                                <span aria-hidden="true">&laquo;</span>
+                                                            </a>
+                                                        </li>
+
+                                                        <c:forEach begin="1" end="${totalPages}" varStatus="loop">
+                                                            <li class="page-item">
+                                                                <a class="${currentPage eq loop.index ? 'active page-link' : 'page-link'}"
+                                                                    href="/admin/order?page=${loop.index}">
+                                                                    ${loop.index}
+                                                                </a>
+                                                            </li>
+
+                                                        </c:forEach>
+                                                        <li class="page-item">
+                                                            <a class="${currentPage eq totalPages ? 'disabled page-link' : 'page-link'}"
+                                                                href="/admin/order?page=${currentPage+1}"
+                                                                aria-label="Next">
+                                                                <span aria-hidden="true">&raquo;</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </nav>
                                             </div>
                                         </div>
                                     </div>

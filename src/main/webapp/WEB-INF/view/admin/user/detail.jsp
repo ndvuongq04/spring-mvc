@@ -25,7 +25,7 @@
                             <ol class="breadcrumb mb-4">
                                 <li class="breadcrumb-item active"><a href="/admin"
                                         style="text-decoration: none">Dashboard</a></li>
-                                <li class="breadcrumb-item active"><a href="/admin/user"
+                                <li class="breadcrumb-item active"><a href="/admin/user?page=${currentPage}"
                                         style="text-decoration: none">User</a></li>
                                 <li class="breadcrumb-item active">View</li>
                             </ol>
@@ -51,7 +51,8 @@
                                                     <li class="list-group-item">phone : ${user.phone}</li>
                                                 </ul>
                                             </div>
-                                            <a href="/admin/user" class="btn  mt-3 btn-primary">Back</a>
+                                            <a href="/admin/user?page=${currentPage}"
+                                                class="btn  mt-3 btn-primary">Back</a>
 
                                         </div>
                                     </div>

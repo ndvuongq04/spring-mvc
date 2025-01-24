@@ -33,7 +33,8 @@
                                     <h1 class="mt-4">Products</h1>
                                     <ol class="breadcrumb mb-4">
                                         <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                                        <li class="breadcrumb-item"><a href="/admin/order">Order</a></li>
+                                        <li class="breadcrumb-item"><a href="/admin/order?page=${currentPage}">Order</a>
+                                        </li>
                                         <li class="breadcrumb-item active">Update</li>
                                     </ol>
                                     <div class=" mt-5">

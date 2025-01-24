@@ -1,5 +1,7 @@
 package vn.hoidanit.laptopshop.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.stereotype.Repository;
@@ -12,7 +14,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
     User save(User eric); // luu nguoi dung
 
-    List<User> findAll(); // lấy tất cả user trong database
+    Page<User> findAll(Pageable pageable); // lấy tất cả user trong database và phân trang
 
     List<User> findAllByEmail(String email); // lấy tất cả user trong database có email là ...
 
