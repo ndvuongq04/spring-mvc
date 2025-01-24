@@ -3,6 +3,9 @@ package vn.hoidanit.laptopshop.controller.admin;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,10 +35,15 @@ public class ProductController {
     }
 
     @GetMapping("/admin/product")
-    public String getProduct(Model model) {
-        // -> lấy tất cả các product -> chuyển đến view
-        List<Product> products = this.productService.getAllProduct();
-        model.addAttribute("products", products);
+    public String getProduct(Model model,
+            @RequestParam("page") int page // lấy tham số query string : page - lưu vào page có nó kdl là int
+    ) {
+        // chuyển page type int sang type pageable
+        Pageable pageable = PageRequest.of(page - 1, 4); // size = 3 ; page : chạy từ 0 -> n-1 page
+        Page<Product> products = this.productService.getAllProduct(pageable);
+        List<Product> litsProducts = products.getContent(); // lấy nội dung của products chuyển vào listProducts và kdl
+                                                            // trả về của getContent là List
+        model.addAttribute("products", litsProducts);
         return "admin/product/show";
     }
 
