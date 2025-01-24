@@ -26,7 +26,7 @@
                                 <ol class="breadcrumb mb-4">
                                     <li class="breadcrumb-item active"><a href="/admin"
                                             style="text-decoration: none">Dashboard</a></li>
-                                    <li class="breadcrumb-item active"><a href="/admin/product"
+                                    <li class="breadcrumb-item active"><a href="/admin/product?page=${page}"
                                             style="text-decoration: none">Product</a></li>
                                     <li class="breadcrumb-item active">Delete</li>
                                 </ol>

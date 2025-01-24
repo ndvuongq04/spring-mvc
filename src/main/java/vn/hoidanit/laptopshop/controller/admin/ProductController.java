@@ -36,14 +36,32 @@ public class ProductController {
 
     @GetMapping("/admin/product")
     public String getProduct(Model model,
-            @RequestParam("page") int page // lấy tham số query string : page - lưu vào page có nó kdl là int
+            @RequestParam("page") Optional<String> pageOptional // lấy tham số query string : page - lưu vào page có nó
+                                                                // kdl là int
     ) {
+        int page = 1;
+
+        // bỏ vào try catch vì nếu người dùng nhập string -> ép kiểu dữ liệu thất bại ->
+        // nó chỉ ném ra exception thôi không dùng chương trình lại
+        try {
+            if (pageOptional.isPresent()) {
+                page = Integer.parseInt(pageOptional.get());
+            }
+            // page = 1
+        } catch (Exception e) {
+            // page = 1
+            // TODO: handle exception
+        }
+
         // chuyển page type int sang type pageable
-        Pageable pageable = PageRequest.of(page - 1, 4); // size = 3 ; page : chạy từ 0 -> n-1 page
+        Pageable pageable = PageRequest.of(page - 1, 2); // size = 3 ; page : chạy từ 0 -> n-1 page
         Page<Product> products = this.productService.getAllProduct(pageable);
         List<Product> litsProducts = products.getContent(); // lấy nội dung của products chuyển vào listProducts và kdl
                                                             // trả về của getContent là List
         model.addAttribute("products", litsProducts);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", products.getTotalPages());
+
         return "admin/product/show";
     }
 
@@ -81,9 +99,24 @@ public class ProductController {
     @GetMapping("/admin/product/delete/{id}")
     public String getDeletePage(Model model,
             @ModelAttribute("userFormData") Product userFormData,
-            @PathVariable long id) {
+            @PathVariable long id,
+            @RequestParam("page") Optional<String> pageOptional) {
+
+        // khi page != số -> chuyển về trang 1 >< chuyển về trang vừa trước đó mà người
+        // dùng đã truy cập
+
+        int page = 1;
+        try {
+            if (pageOptional.isPresent()) {
+                page = Integer.parseInt(pageOptional.get());
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
         model.addAttribute("userFormData", userFormData);
         model.addAttribute("id", id);
+        model.addAttribute("page", page);
+
         return "admin/product/delete";
     }
 
@@ -97,18 +130,45 @@ public class ProductController {
 
     // view
     @GetMapping("/admin/product/{id}")
-    public String getDetailPage(Model model, @PathVariable long id) {
+    public String getDetailPage(Model model,
+            @PathVariable long id,
+            @RequestParam("page") Optional<String> pageOptional) {
+
+        int page = 1;
+        try {
+            if (pageOptional.isPresent()) {
+                page = Integer.parseInt(pageOptional.get());
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+
         Product productGoDetail = this.productService.getProductById(id);
         model.addAttribute("productGoDetail", productGoDetail);
         model.addAttribute("id", id);
+        model.addAttribute("page", page);
+
         return "admin/product/detail";
     }
 
     // update
     @GetMapping("/admin/product/update/{id}")
-    public String getUpdateProductPage(Model model, @PathVariable long id) {
+    public String getUpdateProductPage(Model model,
+            @PathVariable long id,
+            @RequestParam("page") Optional<String> pageOptional) {
+
+        int page = 1;
+        try {
+            if (pageOptional.isPresent()) {
+                page = Integer.parseInt(pageOptional.get());
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
         Optional<Product> currentProduct = this.productService.fetchProductById(id);
         model.addAttribute("newProduct", currentProduct.get());
+        model.addAttribute("page", page);
+
         return "admin/product/update";
     }
 

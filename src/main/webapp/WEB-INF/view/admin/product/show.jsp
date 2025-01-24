@@ -65,11 +65,11 @@
                                                                 </td>
                                                                 <td>${product.factory}</td>
                                                                 <td>
-                                                                    <a href="/admin/product/${product.id}"
+                                                                    <a href="/admin/product/${product.id}?page=${currentPage}"
                                                                         class="btn btn-success">View</a>
-                                                                    <a href="/admin/product/update/${product.id}"
+                                                                    <a href="/admin/product/update/${product.id}?page=${currentPage}"
                                                                         class="btn btn-warning">Update</a>
-                                                                    <a href="/admin/product/delete/${product.id}"
+                                                                    <a href="/admin/product/delete/${product.id}?page=${currentPage}"
                                                                         class="btn btn-danger">Delete</a>
                                                                 </td>
                                                             </tr>
@@ -79,21 +79,27 @@
                                                 <nav aria-label="Page navigation example">
                                                     <ul class="pagination justify-content-center">
                                                         <li class="page-item">
-                                                            <a class="page-link" href="#" aria-label="Previous">
+                                                            <a class="${ currentPage eq 1 ? 'disabled page-link':'page-link'}"
+                                                                href="/admin/product?page=${currentPage-1}"
+                                                                aria-label="Previous">
                                                                 <span aria-hidden="true">&laquo;</span>
                                                             </a>
                                                         </li>
-                                                        <li class="page-item"><a class="page-link"
-                                                                href="/admin/product?page=1">1</a>
-                                                        </li>
-                                                        <li class="page-item"><a class="page-link"
-                                                                href="/admin/product?page=2">2</a>
-                                                        </li>
-                                                        <li class="page-item"><a class="page-link"
-                                                                href="/admin/product?page=3">3</a>
-                                                        </li>
+
+                                                        <!-- varStatus có thể thay đổi : loop -> loop1 , ... -->
+                                                        <c:forEach begin="0" end="${totalPages - 1}" varStatus="loop">
+                                                            <li class="page-item">
+                                                                <a class="${ currentPage eq loop.index+1 ? 'active page-link':'page-link'}"
+                                                                    href="/admin/product?page=${loop.index+1}">
+                                                                    ${loop.index+1}
+                                                                </a>
+                                                            </li>
+                                                        </c:forEach>
+
                                                         <li class="page-item">
-                                                            <a class="page-link" href="#" aria-label="Next">
+                                                            <a class="${ currentPage eq totalPages ? 'disabled page-link':'page-link'}"
+                                                                href="/admin/product?page=${currentPage+1}"
+                                                                aria-label="Next">
                                                                 <span aria-hidden="true">&raquo;</span>
                                                             </a>
                                                         </li>

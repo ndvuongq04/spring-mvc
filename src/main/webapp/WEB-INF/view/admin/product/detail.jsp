@@ -25,7 +25,7 @@
                             <ol class="breadcrumb mb-4">
                                 <li class="breadcrumb-item active"><a href="/admin"
                                         style="text-decoration: none">Dashboard</a></li>
-                                <li class="breadcrumb-item active"><a href="/admin/product"
+                                <li class="breadcrumb-item active"><a href="/admin/product?page=${page}"
                                         style="text-decoration: none">Product</a></li>
                                 <li class="breadcrumb-item active">View</li>
                             </ol>
@@ -54,7 +54,7 @@
                                                     <li class="list-group-item">Price : ${productGoDetail.price}</li>
                                                 </ul>
                                             </div>
-                                            <a href="/admin/product" class="btn  mt-3 btn-primary">Back</a>
+                                            <a href="/admin/product?page=${page}" class="btn  mt-3 btn-primary">Back</a>
 
                                         </div>
                                     </div>
