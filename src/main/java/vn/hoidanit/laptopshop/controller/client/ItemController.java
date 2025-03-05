@@ -2,6 +2,7 @@ package vn.hoidanit.laptopshop.controller.client;
 
 import java.net.http.HttpRequest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -164,7 +165,12 @@ public class ItemController {
 
     @GetMapping("/products")
     public String getProductPage(Model model, @RequestParam("page") Optional<String> pageOptional,
-            @RequestParam("name") Optional<String> nameOptional) {
+            @RequestParam("name") Optional<String> nameOptional,
+            @RequestParam("min-price") Optional<String> minPriceOptional,
+            @RequestParam("max-price") Optional<String> maxPriceOptional,
+            @RequestParam("factory") Optional<String> factoryOptional,
+            @RequestParam("price") Optional<String> priceOptional) {
+
         int page = 1;
         try {
             if (pageOptional.isPresent()) {
@@ -178,10 +184,41 @@ public class ItemController {
             // TODO: handle exception
         }
 
-        Pageable pageable = PageRequest.of(page - 1, 6);
+        Pageable pageable = PageRequest.of(page - 1, 60);
         String name = nameOptional.isPresent() ? nameOptional.get() : "";
+        // yêu cầu 1 :
+        // double min = minPriceOptional.isPresent() ?
+        // Double.parseDouble(minPriceOptional.get()) : 0;
+        // Page<Product> prs = this.productService.getAllProductWidthSpec(min,
+        // pageable);
 
-        Page<Product> prs = this.productService.getAllProductWidthSpec(name, pageable);
+        // yêu cầu 2 :
+        // double max = maxPriceOptional.isPresent() ?
+        // Double.parseDouble(maxPriceOptional.get()) : 0;
+        // Page<Product> prs = this.productService.getAllProductWidthSpec(max,
+        // pageable);
+
+        // yêu cầu 3 :
+        // String factory = factoryOptional.isPresent() ? factoryOptional.get() : "";
+        // Page<Product> prs = this.productService.getAllProductWidthSpec(factory,
+        // pageable);
+
+        // yêu cầu 4 :
+        // List<String> factory = Arrays.asList(factoryOptional.get().split(","));
+        // Page<Product> prs = this.productService.getAllProductWidthSpec(factory,
+        // pageable);
+
+        // yêu cầu 5 :
+        // String price = priceOptional.isPresent() ? priceOptional.get() : "";
+        // Page<Product> prs = this.productService.getAllProductWidthSpec(price,
+        // pageable);
+        // yêu cầu 6 :
+
+        List<String> price = Arrays.asList(priceOptional.get().split(","));
+        Page<Product> prs = this.productService.getAllProductWidthSpec(price, pageable);
+
+        // Page<Product> prs = this.productService.getAllProductWidthSpec(name,
+        // pageable);
         List<Product> products = prs.getContent();
 
         model.addAttribute("products", products);

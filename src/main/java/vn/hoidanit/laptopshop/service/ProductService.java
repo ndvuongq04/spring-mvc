@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpSession;
@@ -49,8 +50,95 @@ public class ProductService {
         return this.productRepository.save(vuong);
     }
 
-    public Page<Product> getAllProductWidthSpec(String name, Pageable page) {
-        return this.productRepository.findAll(ProductSpecs.nameLike(name), page);
+    // public Page<Product> getAllProductWidthSpec(String name, Pageable page) {
+    // return this.productRepository.findAll(ProductSpecs.nameLike(name), page);
+    // }
+
+    // yêu cầu 1
+    // public Page<Product> getAllProductWidthSpec(double min, Pageable page) {
+    // return this.productRepository.findAll(ProductSpecs.minPrice(min), page);
+    // }
+
+    // yêu cầu 2
+    // public Page<Product> getAllProductWidthSpec(double max, Pageable page) {
+    // return this.productRepository.findAll(ProductSpecs.maxPrice(max), page);
+    // }
+
+    // yêu cầu 3
+    // public Page<Product> getAllProductWidthSpec(String factory, Pageable page) {
+    // return this.productRepository.findAll(ProductSpecs.factoryEqual(factory),
+    // page);
+    // }
+
+    // yêu cầu 4
+    // public Page<Product> getAllProductWidthSpec(List<String> factory, Pageable
+    // page) {
+    // return this.productRepository.findAll(ProductSpecs.factoryManyEqual(factory),
+    // page);
+    // }
+
+    // yêu cầu 5
+    // public Page<Product> getAllProductWidthSpec(String price, Pageable page) {
+    // // check url
+    // if (price.equals("10-toi-15-trieu")) {
+    // double min = 10000000;
+    // double max = 15000000;
+    // return this.productRepository.findAll(ProductSpecs.matchPrice(min, max),
+    // page);
+    // } else if (price.equals("10-toi-30-trieu")) {
+    // double min = 10000000;
+    // double max = 30000000;
+    // return this.productRepository.findAll(ProductSpecs.matchPrice(min, max),
+    // page);
+    // } else {
+    // return this.productRepository.findAll(page);
+    // }
+
+    // }
+
+    // yêu cầu 6
+    public Page<Product> getAllProductWidthSpec(List<String> price, Pageable page) {
+        Specification<Product> combinedSpec = (root, query, criteriaBuilder) -> criteriaBuilder.disjunction();
+        int count = 0;
+        for (String p : price) {
+            double min = 0;
+            double max = 0;
+
+            switch (p) {
+                case "10-toi-15-trieu":
+                    min = 10000000;
+                    max = 15000000;
+                    count++;
+                    break;
+                case "15-toi-20-trieu":
+                    min = 15000000;
+                    max = 20000000;
+                    count++;
+                    break;
+                case "20-toi-30-trieu":
+                    min = 20000000;
+                    max = 30000000;
+                    count++;
+                    break;
+            }
+
+            // nếu min max có giá trị -> ngay lập tức đi tạo câu truy vấn ngay
+            if (min != 0 && max != 0) {
+                Specification<Product> rangeSpec = ProductSpecs.priceManyBetween(min, max); // lưu logic câu truy vấn
+                                                                                            // vừa có được
+                combinedSpec = combinedSpec.or(rangeSpec); // gộp các logic truy vấn thành 1 câu truy vấn lớn như :
+                // WHERE (price BETWEEN 10_000_000 AND 15_000_000)
+                // OR (price BETWEEN 15_000_000 AND 20_000_000)
+                // OR (price BETWEEN 20_000_000 AND 30_000_000)
+            }
+        }
+
+        // nếu không có giá trị p nào TM
+        if (count == 0) {
+            return this.productRepository.findAll(page);
+        }
+        // >< có logic câu truy vấn -> thực thi câu lệnh
+        return this.productRepository.findAll(combinedSpec, page);
     }
 
     public Page<Product> getAllProduct(Pageable page) {
