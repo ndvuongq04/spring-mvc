@@ -20,6 +20,7 @@ import vn.hoidanit.laptopshop.domain.CartDetail;
 import vn.hoidanit.laptopshop.domain.Order;
 import vn.hoidanit.laptopshop.domain.Product;
 import vn.hoidanit.laptopshop.domain.User;
+import vn.hoidanit.laptopshop.domain.dto.ProductCriteriaDTO;
 import vn.hoidanit.laptopshop.service.ProductService;
 import vn.hoidanit.laptopshop.service.UserService;
 
@@ -164,19 +165,13 @@ public class ItemController {
     }
 
     @GetMapping("/products")
-    public String getProductPage(Model model,
-            @RequestParam("page") Optional<String> pageOptional,
-            @RequestParam("name") Optional<String> nameOptional,
-            @RequestParam("min-price") Optional<String> minPriceOptional,
-            @RequestParam("max-price") Optional<String> maxPriceOptional,
-            @RequestParam("factory") Optional<String> factoryOptional,
-            @RequestParam("price") Optional<String> priceOptional) {
+    public String getProductPage(Model model, ProductCriteriaDTO productCriteriaDTO) {
 
         int page = 1;
         try {
-            if (pageOptional.isPresent()) {
+            if (productCriteriaDTO.getPage().isPresent()) {
                 // convert from String to int
-                page = Integer.parseInt(pageOptional.get());
+                page = Integer.parseInt(productCriteriaDTO.getPage().get());
             } else {
                 // page = 1
             }
@@ -186,7 +181,7 @@ public class ItemController {
         }
 
         Pageable pageable = PageRequest.of(page - 1, 60);
-        String name = nameOptional.isPresent() ? nameOptional.get() : "";
+        // String name = nameOptional.isPresent() ? nameOptional.get() : "";
         // yêu cầu 1 :
         // double min = minPriceOptional.isPresent() ?
         // Double.parseDouble(minPriceOptional.get()) : 0;
@@ -218,8 +213,7 @@ public class ItemController {
         // Page<Product> prs = this.productService.getAllProductWidthSpec(price,
         // pageable);
 
-        Page<Product> prs = this.productService.getAllProductWidthSpec(name,
-                pageable);
+        Page<Product> prs = this.productService.getAllProduct(pageable);
         List<Product> products = prs.getContent();
 
         model.addAttribute("products", products);
