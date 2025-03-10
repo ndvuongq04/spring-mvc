@@ -164,7 +164,8 @@ public class ItemController {
     }
 
     @GetMapping("/products")
-    public String getProductPage(Model model, @RequestParam("page") Optional<String> pageOptional,
+    public String getProductPage(Model model,
+            @RequestParam("page") Optional<String> pageOptional,
             @RequestParam("name") Optional<String> nameOptional,
             @RequestParam("min-price") Optional<String> minPriceOptional,
             @RequestParam("max-price") Optional<String> maxPriceOptional,
@@ -213,12 +214,12 @@ public class ItemController {
         // Page<Product> prs = this.productService.getAllProductWidthSpec(price,
         // pageable);
         // yêu cầu 6 :
-
-        List<String> price = Arrays.asList(priceOptional.get().split(","));
-        Page<Product> prs = this.productService.getAllProductWidthSpec(price, pageable);
-
-        // Page<Product> prs = this.productService.getAllProductWidthSpec(name,
+        // List<String> price = Arrays.asList(priceOptional.get().split(","));
+        // Page<Product> prs = this.productService.getAllProductWidthSpec(price,
         // pageable);
+
+        Page<Product> prs = this.productService.getAllProductWidthSpec(name,
+                pageable);
         List<Product> products = prs.getContent();
 
         model.addAttribute("products", products);
