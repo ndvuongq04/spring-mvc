@@ -181,40 +181,10 @@ public class ItemController {
         }
 
         Pageable pageable = PageRequest.of(page - 1, 60);
-        // String name = nameOptional.isPresent() ? nameOptional.get() : "";
-        // yêu cầu 1 :
-        // double min = minPriceOptional.isPresent() ?
-        // Double.parseDouble(minPriceOptional.get()) : 0;
-        // Page<Product> prs = this.productService.getAllProductWidthSpec(min,
-        // pageable);
 
-        // yêu cầu 2 :
-        // double max = maxPriceOptional.isPresent() ?
-        // Double.parseDouble(maxPriceOptional.get()) : 0;
-        // Page<Product> prs = this.productService.getAllProductWidthSpec(max,
-        // pageable);
-
-        // yêu cầu 3 :
-        // String factory = factoryOptional.isPresent() ? factoryOptional.get() : "";
-        // Page<Product> prs = this.productService.getAllProductWidthSpec(factory,
-        // pageable);
-
-        // yêu cầu 4 :
-        // List<String> factory = Arrays.asList(factoryOptional.get().split(","));
-        // Page<Product> prs = this.productService.getAllProductWidthSpec(factory,
-        // pageable);
-
-        // yêu cầu 5 :
-        // String price = priceOptional.isPresent() ? priceOptional.get() : "";
-        // Page<Product> prs = this.productService.getAllProductWidthSpec(price,
-        // pageable);
-        // yêu cầu 6 :
-        // List<String> price = Arrays.asList(priceOptional.get().split(","));
-        // Page<Product> prs = this.productService.getAllProductWidthSpec(price,
-        // pageable);
-
-        Page<Product> prs = this.productService.getAllProduct(pageable);
-        List<Product> products = prs.getContent();
+        Page<Product> prs = this.productService.getAllProductWidthSpec(pageable, productCriteriaDTO);
+        List<Product> products = prs.getContent().size() > 0 ? prs.getContent()
+                : new ArrayList<Product>();
 
         model.addAttribute("products", products);
         model.addAttribute("currentPage", page);
