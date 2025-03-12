@@ -124,7 +124,7 @@ public class ProductService {
 
     // yêu cầu 6
     public Specification<Product> buildPriceProductWidthSpec(List<String> price) {
-        Specification<Product> combinedSpec = (root, query, criteriaBuilder) -> criteriaBuilder.disjunction();
+        Specification<Product> combinedSpec = Specification.where(null); // logic câu truy vấn không có điều kiện gì
         for (String p : price) {
             double min = 0;
             double max = 0;
